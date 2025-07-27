@@ -5,17 +5,7 @@ Team Name: NAN
 **Objective**
 Extract a structured outline (Title, H1, H2, H3) from a given PDF file (≤ 50 pages) with high precision and speed. The output must be a clean, hierarchical JSON format usable for downstream document intelligence.
 
-**Directory Structure
-**
- ├──solution/
- │ ├── input
- │ └── output
- ├── title_h1_h2_h3_model.joblib
- ├── font_encoder.joblib
- ├── training.py
- ├── testing.py
- ├── Dockerfile
- ├── README.md
+
  
 **Models and Libraries Used**
 **PyMuPDF (fitz):** PDF layout parsing

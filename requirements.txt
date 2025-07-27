@@ -1,0 +1,7 @@
+pymupdf
+pandas
+scikit-learn==1.5.1
+joblib
+pytesseract
+Pillow
+langdetect

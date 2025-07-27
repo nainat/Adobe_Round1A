@@ -1,59 +1,79 @@
-## Adobe India Hackathon 2025 – Round 1A Submission
+# 📄 Adobe India Hackathon 2025 – Round 1A Submission
 
-### Challenge: “Connecting the Dots”  Understand Your Document
-Team Name: NAN
-**Objective**
-Extract a structured outline (Title, H1, H2, H3) from a given PDF file (≤ 50 pages) with high precision and speed. The output must be a clean, hierarchical JSON format usable for downstream document intelligence.
+### 🔍 Challenge: “Connecting the Dots” – Understand Your Document  
+**Team Name:** `NAN`
 
+---
 
- 
-**Models and Libraries Used**
-**PyMuPDF (fitz):** PDF layout parsing
-**scikit-learn:** Feature engineering & RandomForestClassifier
-**joblib:** Model serialization
-**pandas, numpy:** Data manipulation
-**unicodedata, regex: ** Text normalization (multilingual support)
+## 🧠 Objective
 
-**Features**
--Smart PDF structure parsing with contextual font & layout signals
--Hierarchical heading extraction (Title, H1, H2, H3)
--Trained on ground truth with contextual + sequential features
--Multilingual PDF compatibility (supports Japanese, Telugu,Hindi etc.)
+Extract a **structured outline** (Title, H1, H2, H3) from a given PDF (≤ 50 pages) with **high precision** and **speed**.  
+The output is a **clean, hierarchical JSON format** ready for downstream document intelligence.
 
-**How It Works**
+---
 
-**Training Pipeline (`training.py`)**
-1. Parses PDFs using `PyMuPDF` (fitz).
-2. Dataset was made by using existing pdfs and creating .jsons file for 350+ pdfs
-3. Extracts per-line features: font size, boldness, position, centeredness, etc.
-4. Applies normalization and heuristics to match labeled headings (from ground truth JSONs).
-5. Trains a `RandomForestClassifier` inside a `sklearn` pipeline using: TF-IDF features from text
-6. Numerical + boolean layout features
-7. Saves:
-      Trained model: `title_h1_h2_h3_model.joblib`
-      Font encoder: `font_encoder.joblib`
+## 🧰 Models & Libraries Used
 
-**Inference (`testing.py`)**
-1. Loads trained model and font encoder.
-2, Extracts lines and engineered features from PDFs in `input/`.
-3 Predicts headings (title, H1, H2, H3).
+- **PyMuPDF (`fitz`)** – PDF layout parsing  
+- **scikit-learn** – Feature engineering & `RandomForestClassifier`  
+- **joblib** – Model serialization  
+- **pandas**, **numpy** – Data manipulation  
+- **unicodedata**, **regex** – Text normalization (for multilingual support)
+
+---
+
+## ✨ Features
+
+- Smart PDF structure parsing using **font and layout signals**
+- Accurate **hierarchical heading detection** (Title, H1, H2, H3)
+- Trained with contextual + sequential layout features
+- Supports **multilingual PDFs** (e.g., Japanese, Telugu, Hindi)
+
+---
+
+## 🔧 How It Works
+
+### 📈 Training Pipeline (`training.py`)
+
+1. Parses PDFs using `PyMuPDF`
+2. Dataset created with 350+ PDFs and labeled `.json` files
+3. Extracts per-line layout features:
+   - Font size, boldness, position, centeredness, etc.
+4. Normalizes and aligns with ground truth
+5. Trains a `RandomForestClassifier` using:
+   - TF-IDF features
+   - Layout-based features
+6. Saves trained artifacts:
+   - `title_h1_h2_h3_model.joblib`
+   - `font_encoder.joblib`
+
+---
+
+### 🧪 Inference Pipeline (`testing.py`)
+
+1. Loads trained model + font encoder
+2. Extracts lines & engineered features from PDFs in `/input`
+3. Predicts heading levels: Title, H1, H2, H3
 4. Handles:
-    Numbered/Bulleted formats
-    Multilingual PDFs (UTF-8 support)
+   - Numbered & bulleted headings
+   - Multilingual (UTF-8) PDFs
+5. Outputs structured JSONs to `/output`
 
+---
 
-Generates structured output JSONs in `/output/`.
+## 📂 Input & Output
 
-Input Format
+### 🔹 Input
 
-- Input directory: `/app/input`
-- Input files: One or more `.pdf` files (each ≤ 50 pages)
+- Directory: `/app/input`
+- Files: One or more `.pdf` files (each ≤ 50 pages)
 
-Output Format (per file)
+### 🔸 Output
 
-- Output directory: `/app/output`
-- Output: Corresponding `.json` per input `.pdf` in this format:
+- Directory: `/app/output`
+- Format:
 
+```json
 {
   "title": "Understanding AI",
   "outline": [
@@ -62,6 +82,7 @@ Output Format (per file)
     { "level": "H3", "text": "History of AI", "page": 3 }
   ]
 }
+```
 
 **🐳 Docker Setup**
 
@@ -71,25 +92,30 @@ Output Format (per file)
 - CPU-only (amd64)
 - Model size < 200MB
 - Offline execution
-- 
-Build code:
+  
+**Build code:**
+```bash
 docker build --platform linux/amd64 -t mysolution:abc123 .
-Run code:
+```
+**Run code:**
+```bash
 docker run --rm \
   -v $(pwd)/input:/app/input \
   -v $(pwd)/output:/app/output \
   --network none \
   mysolution:abc123
+```
 
+## ✅ Constraints Satisfied
 
-**Constraints Satisfied**
-Constraint
-Status 
-≤ 10s for 50-page PDF  -  Optimized
-Model size ≤ 200MB - (~6MB)
-CPU-only - Yes
-No internet access - Enforced
-AMD64 compatibility - Base image
+| Constraint                   | Status       |
+|-----------------------------|--------------|
+| ≤ 10s for 50-page PDF       | Optimized  |
+| Model size ≤ 200MB          | (~6MB)     |
+| CPU-only                    | Yes        |
+| No internet access          | Enforced   |
+| AMD64 compatibility         | Base image |
+
 
 
 **Submission Package**
